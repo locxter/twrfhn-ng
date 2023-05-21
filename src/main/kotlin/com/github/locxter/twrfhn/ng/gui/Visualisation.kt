@@ -4,18 +4,16 @@ import com.github.locxter.twrfhn.ng.model.Move
 import java.awt.Color
 import java.awt.Font
 import java.awt.Graphics
+import java.awt.Graphics2D
 import javax.swing.JComponent
 import kotlin.math.roundToInt
 
-
 class Visualisation() : JComponent() {
-    private var scalingRatio = 0.0
-    private var showStartScreen = true
+    private var scalingRatio: Double = 0.0
+    private var showStartScreen: Boolean = true
     var move = Move()
         set(value) {
-            if (showStartScreen) {
-                showStartScreen = false
-            }
+            showStartScreen = false
             field = value
             repaint()
         }
@@ -26,28 +24,27 @@ class Visualisation() : JComponent() {
 
     // Method to draw the component
     override fun paintComponent(context: Graphics) {
-        val width = width
-        val height = height
         // Clear the component
         super.paintComponent(context)
-        context.color = Color(60, 63, 65)
-        context.fillRect(0, 0, width, height)
+        val context2d = context as Graphics2D
+        context2d.color = Color(60, 63, 65)
+        context2d.fillRect(0, 0, width, height)
         // Calculate the scaling ratio and center the canvas
         if (width.toDouble() / height > 16.0 / 9) {
             scalingRatio = height / 1080.0
-            context.translate(((width - (scalingRatio * 1920)) / 2).roundToInt(), 0)
+            context2d.translate(((width - (scalingRatio * 1920)) / 2).roundToInt(), 0)
         } else {
             scalingRatio = width / 1920.0
-            context.translate(0, ((height - (scalingRatio * 1080)) / 2).roundToInt())
+            context2d.translate(0, ((height - (scalingRatio * 1080)) / 2).roundToInt())
         }
         if (showStartScreen) {
             // Draw a start screen if no visualisation has been requested yet
             val font = Font(Font.SANS_SERIF, Font.PLAIN, getScaledValue(64))
-            val metrics = context.getFontMetrics(font)
+            val metrics = context2d.getFontMetrics(font)
             val message = "Press \"Calculate\" to see the visualisation."
-            context.font = font
-            context.color = Color(255, 255, 255)
-            context.drawString(
+            context2d.font = font
+            context2d.color = Color(255, 255, 255)
+            context2d.drawString(
                 message,
                 ((getScaledValue(1920).toDouble() - metrics.stringWidth(message)) / 2).roundToInt(),
                 (((getScaledValue(1080).toDouble() - metrics.height) / 2) + metrics.ascent).roundToInt()
@@ -61,17 +58,17 @@ class Visualisation() : JComponent() {
                     else -> move.rodC
                 }
                 // Drawing a rod
-                context.color = Color(255, 255, 255)
-                context.fillRect(
+                context2d.color = Color(255, 255, 255)
+                context2d.fillRect(
                     getScaledValue(304 + (640 * i)), 0, getScaledValue(32),
                     getScaledValue(1080)
                 )
                 // Drawing the disks on the rod
-                context.color = Color(0, 255, 0)
+                context2d.color = Color(0, 255, 0)
                 for (j in 0 until rod.disks.size) {
                     val disk = rod.disks[j]
                     val diskWidth = ((640.0 / diskCount) * disk.size).roundToInt()
-                    context.fillRect(
+                    context2d.fillRect(
                         getScaledValue(320 - (diskWidth / 2) + (640 * i)),
                         getScaledValue(1080 - (108 * (j + 1))),
                         getScaledValue(diskWidth),
