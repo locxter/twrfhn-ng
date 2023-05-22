@@ -39,7 +39,7 @@ class Visualisation() : JComponent() {
         }
         if (showStartScreen) {
             // Draw a start screen if no visualisation has been requested yet
-            val font = Font(Font.SANS_SERIF, Font.PLAIN, getScaledValue(64))
+            val font = Font(Font.SANS_SERIF, Font.PLAIN, this.font.size)
             val metrics = context2d.getFontMetrics(font)
             val message = "Press \"Calculate\" to see the visualisation."
             context2d.font = font
