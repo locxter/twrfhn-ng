@@ -5,13 +5,15 @@ import kotlin.math.pow
 class Game() {
     var diskCount: Int = 0
         set(value) {
-            val rodA = Rod()
-            for (i in value downTo 1) {
-                rodA.disks.add(Disk(i))
+            if (value >= 0) {
+                val rodA = Rod()
+                for (i in value downTo 1) {
+                    rodA.disks.add(Disk(i))
+                }
+                moves.clear()
+                moves.add(Move(rodA))
+                field = value
             }
-            moves.clear()
-            moves.add(Move(rodA))
-            field = value
         }
     val moves: MutableList<Move> = mutableListOf()
 
