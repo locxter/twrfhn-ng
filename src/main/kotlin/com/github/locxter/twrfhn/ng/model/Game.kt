@@ -29,69 +29,35 @@ class Game() {
             val rodC = Rod(moves.last().rodC.disks.map { Disk(it.size) }.toMutableList())
             if (diskCount % 2 == 0) {
                 when (i % 3) {
-                    1 -> moveBetweenRodAAndB(rodA, rodB)
-                    2 -> moveBetweenRodAAndC(rodA, rodC)
-                    0 -> moveBetweenRodBAndC(rodB, rodC)
+                    1 -> moveBetweenRods(rodA, rodB)
+                    2 -> moveBetweenRods(rodA, rodC)
+                    0 -> moveBetweenRods(rodB, rodC)
                 }
             } else {
                 when (i % 3) {
-                    1 -> moveBetweenRodAAndC(rodA, rodC)
-                    2 -> moveBetweenRodAAndB(rodA, rodB)
-                    0 -> moveBetweenRodBAndC(rodB, rodC)
+                    1 -> moveBetweenRods(rodA, rodC)
+                    2 -> moveBetweenRods(rodA, rodB)
+                    0 -> moveBetweenRods(rodB, rodC)
                 }
             }
             moves.add(Move(rodA, rodB, rodC))
         }
     }
 
-    // Make the legal move between pegs A and B (in either direction)
-    private fun moveBetweenRodAAndB(rodA: Rod, rodB: Rod) {
-        if (rodA.disks.isEmpty() && rodB.disks.isNotEmpty()) {
-            rodA.disks.add(rodB.disks.last())
-            rodB.disks.removeLast()
-        } else if (rodB.disks.isEmpty() && rodA.disks.isNotEmpty()) {
-            rodB.disks.add(rodA.disks.last())
-            rodA.disks.removeLast()
-        } else if (rodA.disks.last().size > rodB.disks.last().size) {
-            rodA.disks.add(rodB.disks.last())
-            rodB.disks.removeLast()
+    // Make the legal move between two rods (in either direction)
+    private fun moveBetweenRods(rod1: Rod, rod2: Rod) {
+        if (rod1.disks.isEmpty() && rod2.disks.isNotEmpty()) {
+            rod1.disks.add(rod2.disks.last())
+            rod2.disks.removeLast()
+        } else if (rod2.disks.isEmpty() && rod1.disks.isNotEmpty()) {
+            rod2.disks.add(rod1.disks.last())
+            rod1.disks.removeLast()
+        } else if (rod1.disks.last().size > rod2.disks.last().size) {
+            rod1.disks.add(rod2.disks.last())
+            rod2.disks.removeLast()
         } else {
-            rodB.disks.add(rodA.disks.last())
-            rodA.disks.removeLast()
-        }
-    }
-
-    // Make the legal move between pegs A and B (in either direction)
-    private fun moveBetweenRodAAndC(rodA: Rod, rodC: Rod) {
-        if (rodA.disks.isEmpty() && rodC.disks.isNotEmpty()) {
-            rodA.disks.add(rodC.disks.last())
-            rodC.disks.removeLast()
-        } else if (rodC.disks.isEmpty() && rodA.disks.isNotEmpty()) {
-            rodC.disks.add(rodA.disks.last())
-            rodA.disks.removeLast()
-        } else if (rodA.disks.last().size > rodC.disks.last().size) {
-            rodA.disks.add(rodC.disks.last())
-            rodC.disks.removeLast()
-        } else {
-            rodC.disks.add(rodA.disks.last())
-            rodA.disks.removeLast()
-        }
-    }
-
-    // Make the legal move between pegs B and C (in either direction)
-    private fun moveBetweenRodBAndC(rodB: Rod, rodC: Rod) {
-        if (rodB.disks.isEmpty() && rodC.disks.isNotEmpty()) {
-            rodB.disks.add(rodC.disks.last())
-            rodC.disks.removeLast()
-        } else if (rodC.disks.isEmpty() && rodB.disks.isNotEmpty()) {
-            rodC.disks.add(rodB.disks.last())
-            rodB.disks.removeLast()
-        } else if (rodB.disks.last().size > rodC.disks.last().size) {
-            rodB.disks.add(rodC.disks.last())
-            rodC.disks.removeLast()
-        } else {
-            rodC.disks.add(rodB.disks.last())
-            rodB.disks.removeLast()
+            rod2.disks.add(rod1.disks.last())
+            rod1.disks.removeLast()
         }
     }
 }
